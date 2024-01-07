@@ -4,6 +4,7 @@
 <%
     List<Situation> listpk = (List<Situation>)request.getAttribute("listpk");
     List<Situation> degats = Situation.getAllDegat();
+    String argent = (String)request.getAttribute("argent");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,10 +87,12 @@
     }
 </script>
 
+
 <body>
-    <form action="FormSoinsController" method="post">
+    <form action="FormSituationController" method="post">
         <p>Formulaire situation routière</p>
         <div id="added-inputs-container" class="added-inputs">
+            <input type="hidden" value="<%=argent%>" name="argent">
             <select id="type" name="idpk">
                 <% for(int i = 0; i<listpk.size(); i++){ %>
                     <option value="<%=listpk.get(i).getIdpk()%>"><%=listpk.get(i).getPk()%></option>

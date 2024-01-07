@@ -12,6 +12,10 @@
         <servlet-name>FormSituationController</servlet-name>
         <servlet-class>controller.FormSituationController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FormTypeController</servlet-name>
+        <servlet-class>controller.FormTypeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RouteController</servlet-name>
         <url-pattern>/RouteController</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>FormSituationController</servlet-name>
         <url-pattern>/FormSituationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FormTypeController</servlet-name>
+        <url-pattern>/FormTypeController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

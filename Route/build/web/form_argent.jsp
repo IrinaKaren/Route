@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String id_route = request.getParameter("id_route");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +70,6 @@
 <body>
 
     <form action="FormArgentController">
-        <input type="hidden" name="id_route" value="<%=id_route%>">
         <label for="numeroDents">Entrée votre argent:</label>
         <input type="number" name="argent" required>
         <input type="submit" value="Suivant">

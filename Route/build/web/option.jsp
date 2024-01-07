@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    int id_route = (int)request.getAttribute("id_route");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,8 +52,8 @@
 <body>
 
     <form>
-        <a class="btn" href="form_reparation.jsp?idclient=<%=id_route%>">Réparation</a>
-        <a class="btn" href="form_argent.jsp?id_route=<%=id_route%>">Traitement</a>
+        <!--<a class="btn" href="form_reparation.jsp">Réparation</a>-->
+        <a class="btn" href="form_argent.jsp">Traitement</a>
     </form>
 
 </body>

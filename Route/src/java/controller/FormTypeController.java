@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -11,22 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Situation;
 
-public class FormArgentController extends HttpServlet {
-    
+public class FormTypeController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String argent = request.getParameter("argent");
-//        int id_route = Integer.parseInt(request.getParameter("id_route"));
+        String type = request.getParameter("type");
         try {
-//            request.setAttribute("id_route",id_route);
-            request.setAttribute("argent",argent);
-            request.setAttribute("listpk",Situation.getAllPk());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("form_situation.jsp");
-            dispatcher.forward(request, response);
+            Timestamp date_now = Timestamp.valueOf(LocalDateTime.now());
+            Situation.etablissementConstruction(type,Double.parseDouble(argent),date_now);
+            request.setAttribute("listconstruction",Situation.getLastConstruction(date_now));
         } catch (Exception ex) {
             ex.printStackTrace(response.getWriter());
         }
+            RequestDispatcher dispatcher = request.getRequestDispatcher("list.jsp");
+            dispatcher.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -106,6 +106,26 @@ public class Situation {
     }
     
     //------------------- BORNE KILOMETRIQUE -----------------------------------
+    public static List<Situation> getAllPk() throws Exception {
+        List<Situation> listss = new ArrayList<>();
+        Connection connection = PGSQLConnection.getConnection();
+        String sql = "select id,nom,id_route from borne_kilometrique";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            Situation ss = new Situation();
+            ss.setIdpk(resultSet.getInt("id"));
+            ss.setPk(resultSet.getString("nom"));
+            ss.setId_route(resultSet.getInt("id_route"));
+            listss.add(ss);
+        }
+        try (connection; preparedStatement; resultSet) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listss;
+    }
+    
     public static List<Situation> getPk(int id_route) throws Exception {
         List<Situation> listss = new ArrayList<>();
         Connection connection = PGSQLConnection.getConnection();
@@ -197,17 +217,36 @@ public class Situation {
         }
     }
     
-    public static Timestamp getDateMax() throws Exception{
-        Timestamp date_max = null;
-        Connection connection = PGSQLConnection.getConnection();
-        String sql = "select max(date_situation) as date_situation from construction";
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        while (resultSet.next()) {
-            date_max = resultSet.getTimestamp("date_situation");
+    public static List<Situation> getLastConstruction(Timestamp date_now) throws Exception {
+        List<Situation> dents = new ArrayList<>();
+
+        try (Connection connection = PGSQLConnection.getConnection()) {
+            String sql = "select max(date_situation) as date_situation, id_route, id_pk, id_degat, cout, route, pk, degat " +
+                         "from v_construction " +
+                         "where date_situation = ? " +
+                         "group by id_route, id_pk, id_degat, cout, route, pk, degat";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setTimestamp(1, date_now);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Situation dent = new Situation();
+                        dent.setDate_situation(resultSet.getTimestamp("date_situation"));
+                        dent.setId_route(resultSet.getInt("id_route"));
+                        dent.setIdpk(resultSet.getInt("id_pk"));
+                        dent.setId_degat(resultSet.getInt("id_degat"));
+                        dent.setCout_reparation(resultSet.getDouble("cout"));
+                        dent.setRoute(resultSet.getString("route"));
+                        dent.setPk(resultSet.getString("pk"));
+                        dent.setDegat(resultSet.getString("degat"));
+                        dents.add(dent);
+                    }
+                }
+            }
         }
-        connection.close();
-        return date_max;
+
+        return dents;
     }
     
     //------------------ SITUATION ROUTIERE ------------------------------------
@@ -226,11 +265,9 @@ public class Situation {
             e.printStackTrace();
         }
     }
-    
-    public static List<Situation> etablissementConstruction(String type,double argent)throws Exception{
-        List<Situation> routes = new ArrayList();
+        
+    public static void etablissementConstruction(String type,double argent,Timestamp date_now)throws Exception{
         List<Situation> listprioriter = getPrioriter(type);
-        Timestamp date_now = Timestamp.valueOf(LocalDateTime.now());
         double cout_total = 0;
         for(int i = 0; i<listprioriter.size(); i++){
             int id_degat = listprioriter.get(i).getId_degat();
@@ -253,7 +290,6 @@ public class Situation {
             situation.construction();
             cout_total += cout;
         }
-        return routes;
     }
        
 }

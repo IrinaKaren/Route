@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    double argent = (double)request.getAttribute("argent");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,8 +53,8 @@
 <body>
 
     <form>
-        <!--<a class="btn" href="form_reparation.jsp">Réparation</a>-->
-        <a class="btn" href="form_argent.jsp">Traitement</a>
+        <a class="btn" href="FormTypeController?type=economique&argent=<%=argent%>">Economique</a>
+        <a class="btn" href="FormTypeController?type=esthetique&argent=<%=argent%>">Esthetique</a>
     </form>
 
 </body>

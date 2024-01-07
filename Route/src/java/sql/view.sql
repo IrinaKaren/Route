@@ -68,3 +68,23 @@ JOIN
 JOIN 
     degat d ON d.id = sr.id_degat
 ORDER BY pe.id ASC
+
+
+CREATE OR REPLACE VIEW v_construction AS
+SELECT 
+    c.date_situation as date_situation,
+    c.id_route as id_route,
+    c.id_pk as id_pk,
+    c.id_degat as id_degat,
+    c.cout as cout,
+    r.nom as route,
+    bk.nom as pk,
+    d.nom as degat
+FROM 
+    construction c
+JOIN 
+    route r ON r.id = c.id_route
+JOIN 
+    borne_kilometrique bk ON bk.id = c.id_pk
+JOIN
+    degat d ON d.id = c.id_degat
